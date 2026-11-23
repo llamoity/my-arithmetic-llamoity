@@ -36,6 +36,10 @@ version-file = "src/my_arithmetic_llamoity/_version.py"
 # ------------------------------------------------------------------ tests
 # Environnement interne utilisé par `hatch test`.
 [tool.hatch.envs.hatch-test.scripts]
+# Redéfinir UN script remplace TOUTE la table : il faut redonner les 4.
+run = "pytest{env:HATCH_TEST_ARGS:} {args}"
+run-cov = "coverage run -m pytest{env:HATCH_TEST_ARGS:} {args}"
+cov-combine = "coverage combine"
 # On ajoute `coverage xml` : lu par GitLab (cobertura) et Coveralls.
 cov-report = ["coverage report", "coverage xml"]
 

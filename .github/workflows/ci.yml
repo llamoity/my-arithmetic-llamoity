@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false            # une version qui casse n'annule pas les autres
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # tags nécessaires pour hatch-vcs (défaut : 1 commit)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install hatch
+      - run: hatch test --cover
+      - name: Envoi de la couverture à Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          file: coverage.xml
+          parallel: true          # plusieurs jobs envoient : coveralls attend le "finish"
+          flag-name: py${{ matrix.python-version }}
+
+  coveralls-finish:
+    needs: test
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install hatch
+      - run: hatch run docs:build   # -W : un warning Sphinx fait échouer le job
+      - name: Déclenche le build Read the Docs
+        if: github.event_name == 'push'
+        env:
+          RTD_TOKEN: ${{ secrets.RTD_TOKEN }}
+          RTD_PROJECT: ${{ vars.RTD_PROJECT }}
+        run: |
+          if [ -z "$RTD_TOKEN" ]; then echo "RTD_TOKEN absent, on saute"; exit 0; fi
+          curl --fail -X POST -H "Authorization: Token $RTD_TOKEN" \
+            "https://readthedocs.org/api/v3/projects/$RTD_PROJECT/versions/latest/builds/"
