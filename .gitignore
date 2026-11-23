@@ -1,0 +1,6 @@
+_version.py
+dist/
+docs/_build/
+.coverage*
+coverage.xml
+__pycache__/

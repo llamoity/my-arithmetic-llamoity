@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "my-arithmetic-llamoity"
+dynamic = ["version"]
+description = "Petite bibliothèque d'arithmétique (TP CI/CD)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "llamoity", email = "lilian.lamoity@etudiant.univ-lr.fr" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+]
+dependencies = []
+
+[project.optional-dependencies]
+docs = ["sphinx"]
+
+# ---------------------------------------------------------------- version
+# La version vient des tags git (hatch-vcs -> setuptools-scm).
+[tool.hatch.version]
+source = "vcs"
+# Schéma identique à pandoc-numbering / à la figure du sujet :
+#   tag 0.1 + 2 commits  ->  0.1.post1.dev2   (no-guess-dev)
+#   pas de suffixe +g<hash> (refusé par PyPI)  (no-local-version)
+raw-options = { version_scheme = "no-guess-dev", local_scheme = "no-local-version" }
+
+# Écrit la version dans un fichier à la construction (ignoré par git).
+[tool.hatch.build.hooks.vcs]
+version-file = "src/my_arithmetic_llamoity/_version.py"
+
+# ------------------------------------------------------------------ tests
+# Environnement interne utilisé par `hatch test`.
+[tool.hatch.envs.hatch-test.scripts]
+# On ajoute `coverage xml` : lu par GitLab (cobertura) et Coveralls.
+cov-report = ["coverage report", "coverage xml"]
+
+# ------------------------------------------------------------------- docs
+[tool.hatch.envs.docs]
+features = ["docs"]
+[tool.hatch.envs.docs.scripts]
+build = "sphinx-build -W -b html docs docs/_build/html"
+
+# --------------------------------------------------------------- coverage
+[tool.coverage.run]
+source_pkgs = ["my_arithmetic_llamoity", "tests"]
+branch = true
+parallel = true
+omit = ["src/my_arithmetic_llamoity/_version.py"]
+
+[tool.coverage.paths]
+my_arithmetic_llamoity = ["src/my_arithmetic_llamoity", "*/my-arithmetic-llamoity/src/my_arithmetic_llamoity"]
+tests = ["tests", "*/my-arithmetic-llamoity/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
