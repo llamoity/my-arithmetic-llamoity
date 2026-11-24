@@ -2,6 +2,7 @@ from importlib.metadata import version as _version
 
 project = "my-arithmetic-llamoity"
 author = "llamoity"
+language = "fr"
 release = _version("my-arithmetic-llamoity")   # version calculée par hatch-vcs
 version = ".".join(release.split(".")[:2])
 
