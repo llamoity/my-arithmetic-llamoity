@@ -2,7 +2,7 @@
 
 [![pipeline](https://gitlab.univ-lr.fr/llamoity/my-arithmetic-llamoity/badges/main/pipeline.svg)](https://gitlab.univ-lr.fr/llamoity/my-arithmetic-llamoity/-/pipelines)
 [![coverage](https://gitlab.univ-lr.fr/llamoity/my-arithmetic-llamoity/badges/main/coverage.svg)](https://gitlab.univ-lr.fr/llamoity/my-arithmetic-llamoity/-/commits/main)
-[![CI](https://github.com/GITHUB_USER/my-arithmetic-llamoity/actions/workflows/ci.yml/badge.svg)](https://github.com/GITHUB_USER/my-arithmetic-llamoity/actions/workflows/ci.yml)
+[![CI](https://github.com/GITHUB_USER/my-arithmetic-llamoity/actions/workflows/ci.yml/badge.svg)](https://github.com/llamoity/my-arithmetic-llamoity/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/GITHUB_USER/my-arithmetic-llamoity/badge.svg?branch=main)](https://coveralls.io/github/GITHUB_USER/my-arithmetic-llamoity?branch=main)
 [![Documentation](https://readthedocs.org/projects/my-arithmetic-llamoity/badge/?version=latest)](https://my-arithmetic-llamoity.readthedocs.io/)
 
